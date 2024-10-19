@@ -1,1 +1,1 @@
-download: data/scripts/get_twittersamples.sh
+download_file: data/scripts/get_tweetersamples.sh

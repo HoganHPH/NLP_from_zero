@@ -1,1 +1,1 @@
-nltk.download('twitter_samples')
+python data/downloader.py
