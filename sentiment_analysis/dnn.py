@@ -6,68 +6,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 
 from utils.dataset_utils import setup_data, load_tweets, process_tweet
-
-
-def build_vocab(corpus):
-    ''' Map each word in each tweet to an interger (an index)
-    Input:
-        - corpus (list) : the corpus
-    Output:
-        - vocab (dict): {'words_in_corpus' : 'integer_values'}
-    '''
-    
-    vocab = {
-        '': 0,
-        '[UNK]': 1
-    }
-    
-    i = 2
-    for tweet in corpus:
-        for word in tweet:
-            if word not in vocab:
-                vocab[word] = i
-                i += 1
-    return vocab
-
-
-def max_length(training_x, validation_x):
-    """Computes the length of the longest tweet in the training and validation sets.
-
-    Args:
-        training_x (list): The tweets in the training set.
-        validation_x (list): The tweets in the validation set.
-
-    Returns:
-        int: Length of the longest tweet.
-    """
-    max_len = max([len(x) for x in training_x + validation_x])
-    
-    return max_len
-
-
-def padded_sequence(tweet, vocab_dict, max_len, unk_token='[UNK]'):
-    """transform sequences of words into padded sequences of numbers
-
-    Args:
-        tweet (list): A single tweet encoded as a list of strings.
-        vocab_dict (dict): Vocabulary.
-        max_len (int): Length of the longest tweet.
-        unk_token (str, optional): Unknown token. Defaults to '[UNK]'.
-
-    Returns:
-        list: Padded tweet encoded as a list of int.
-    """
-    
-    unk_id = vocab_dict[unk_token]
-    
-    int_words = []
-    for x in tweet:
-        if x in vocab_dict:
-            int_words.append(vocab_dict[x])
-        else:
-            int_words.append(unk_id)
-    padded_tensor = int_words + [0] * (max_len - len(int_words))
-    return padded_tensor
     
     
 def relu(x):
