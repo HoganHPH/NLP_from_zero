@@ -9,9 +9,14 @@ import tensorflow as tf
 
 from utils.dataset_utils import get_traintest_tweet
 
+def tanh_func(x):
+    return np.maximum(x, 0)
+
+def sigmoid_func(x):
+    return 1 / (1 + np.exp(-x))
 
 class RNN_cell(tf.keras.layers.Layer):
-    def __init__(self, input_dim, output_dim, activation='tanh'):
+    def __init__(self, input_dim, output_dim):
         """ Forward propagation for a a single vanilla RNN cell
         input params:
             - input_dim: embedding dim of each word (shape [1, embedding_dim])
@@ -29,15 +34,21 @@ class RNN_cell(tf.keras.layers.Layer):
         
         
         self.activation = None
+        
+        self.tanh = tanh_func
+        self.sigmoid = sigmoid_func
+        
         if activation == 'tanh':
             self.activation = tf.keras.activations.tanh()
         elif activation == 'sigmoid':
             self.activation = tf.keras.activations.sigmoid()
             
-        
+    """ 25/10/2024: Update y 
+    """
     def call(self, x, h_0):
         h_t = np.dot(h_0, self.w_hh) + np.dot(x, self.w_hx) + self.b_h
-        y = self.activation(h_t)
+        h_t = self.tanh(h_t)
+        y = self.sigmoid(h_t)
         return y, h_t
 
 
