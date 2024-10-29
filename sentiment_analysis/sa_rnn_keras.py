@@ -13,10 +13,9 @@ from utils.plot import plot_metrics
 def create_model(num_words, embedding_dim):
     model = tf.keras.Sequential([
         tf.keras.layers.Embedding(num_words, embedding_dim),
-        tf.keras.layers.SimpleRNN(units=256, return_sequences=True),
-        tf.keras.layers.SimpleRNN(units=128, return_sequences=True),
-        tf.keras.layers.SimpleRNN(units=64),
-        tf.keras.layers.Dense(1, activation='sigmoid')
+        tf.keras.layers.SimpleRNN(units=embedding_dim, return_sequences=True),
+        # tf.keras.layers.SimpleRNN(units=128, return_sequences=True),
+        tf.keras.layers.SimpleRNN(units=1, activation='sigmoid')
     ])
     
     model.compile(loss='binary_crossentropy',
@@ -29,7 +28,7 @@ def create_model(num_words, embedding_dim):
 def sa_rnn_keras_running():
     train_x, val_x, train_y, val_y, num_words, max_len = get_traintest_tweet()
     
-    model = create_model(num_words=num_words, embedding_dim=64)
+    model = create_model(num_words=num_words, embedding_dim=16)
     print("Training...")
     history = model.fit(train_x,
                         train_y,
