@@ -2,6 +2,7 @@ import os
 import re
 import string
 import subprocess
+import numpy as np
 
 from pathlib import Path
 from utils.load_yaml import yaml_load
@@ -202,8 +203,13 @@ def get_traintest_tweet():
     train_x_padded = [padded_sequence(tweet, vocab, max_len) for tweet in train_x]
     val_x_padded = [padded_sequence(tweet, vocab, max_len) for tweet in val_x]
     
+    train_x = np.array(train_x_padded)
+    train_y = np.array(train_y)
+    val_x = np.array(val_x_padded)
+    val_y = np.array(val_y)
+    
     print("\nSuccess!")
     print(f"There are {len(train_x_padded)} sequences in train dataset")
     print(f"There are {len(val_x_padded)} sequences in test dataset")
     
-    return (train_x_padded, val_x_padded, train_y, val_y)
+    return (train_x, val_x, train_y, val_y, num_words, max_len)

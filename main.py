@@ -2,13 +2,14 @@ import tensorflow as tf
 
 from sentiment_analysis.dnn import sa_dnn_runner, get_prediction_from_tweet
 from sentiment_analysis.sa_scratch_rnn import sa_scratch_rnn_running
+from sentiment_analysis.sa_rnn_keras import sa_rnn_keras_running
 
 
 if __name__ == '__main__':
     """
     Training sentiment analysis by DNN
     """
-    # sa_dnn_runner()
+    sa_dnn_runner()
     
     """
     Infer sentiment analysis by DNN
@@ -23,5 +24,11 @@ if __name__ == '__main__':
     """
     Training sentiment analysis by RNN from scratch
     """
-    sa_scratch_rnn_running()
+    # sa_scratch_rnn_running()
+    
+    
+    """
+    Training sentiment analysis by RNN from scratch
+    """
+    # sa_rnn_keras_running()
     
