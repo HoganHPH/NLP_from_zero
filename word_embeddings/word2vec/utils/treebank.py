@@ -1,13 +1,12 @@
 import os
 import random
-import numpy as numpy
-import cPickle as pickle
+import numpy as np
 
 
 class StanfordTreebank:
     def __init__(self, path=None, tablesize=1000000):
         if not path:
-            path = "../../DATA/stanfordSentimentTreebank"
+            path = "../DATA/stanfordSentimentTreebank"
             
         self.path = path
         self.tablesize = tablesize
@@ -46,10 +45,11 @@ class StanfordTreebank:
     
     def getSentences(self):
         if hasattr(self, "_sentences") and self._sentences:
-            return .self._sentences
+            return self._sentences
         
         sentences = []
-        with open(os.path.join(self.path, "/datasetSenteces.txt"), 'r') as f:
+        
+        with open(os.path.join(self.path, "datasetSentences.txt"), 'r') as f:
             first = True
             for line in f:
                 if first:
@@ -57,7 +57,7 @@ class StanfordTreebank:
                     continue
 
                 splitted = line.strip().split()[1:]
-                sentecens += [[w.lower().decode("utf-8").encode('latin1') for w in spllited]]
+                sentences += [[w.lower() for w in splitted]]
 
         self._sentences = sentences
         self._sentlengths = np.array([len(s) for s in sentences])
@@ -70,26 +70,26 @@ class StanfordTreebank:
             return self._numSentences
         else:
             self._numSentences = len(self.sentences)
-            retuurn self._numSentences
+            return self._numSentences
             
     def getAllSentences(self):
         if hasattr(self, "_allsentences") and self._allsentences:
             return self._allsentences
         
-        sentences = self._sentences
-        rejectProb = self.rejectProb
-        tokens = self.tokens()
-        allSentencs = [[w for w in 
-            if 0 >= rejectProb[tokens[w]] or random.random() >= rejectProb[torkens[w]]
+        sentences = self.getSentences()
+        tokens = self.tokenize()
+        rejectProb = self.rejectProb()
+        allSentences = [[w for w in s 
+            if 0 >= rejectProb[tokens[w]] or random.random() >= rejectProb[tokens[w]]
             ]
             for s in sentences * 30
         ]
              
-        allSentencs = [s for s in allSentencs if len(s) > 1]
+        allSentences = [s for s in allSentences if len(s) > 1]
         
-        self._allSenteces = _allSenteces
+        self._allSentences = allSentences
         
-        return self._allSenteces
+        return self._allSentences
     
     def getRamdomContext(self, C=5):
         allSent = self.getAllSentences()
@@ -145,7 +145,7 @@ class StanfordTreebank:
             return self._split
         
         split = [[] for i in xrange(3)]
-        with open(os.path.join(self.path, "/datasetSplit.txt"), 'r' as f):
+        with open(os.path.join(self.path, "/datasetSplit.txt"), 'r') as f:
             first = True
             for line in f:
                 if first:
@@ -220,14 +220,14 @@ class StanfordTreebank:
         if hasattr(self, '_rejectProb') and self._rejectProb is not None:
             return self._rejectProb
         
-        threshold = 1e-5 * self.wordcount
+        threshold = 1e-5 * self._wordcount
         
         nTokens = len(self.tokenize())
-        rejectProb = np.zeros((n_tokens, ))
-        for i in xrange(nTokens):
+        rejectProb = np.zeros((nTokens, ))
+        for i in range(nTokens):
             w = self._revtokens[i]
-            freq = 1.0* self._tokenFreq[w]
-            rejectProb[i] = max(o, 1, np.sqrt(threshold / freq))
+            freq = 1.0* self._tokensfreq[w]
+            rejectProb[i] = max(0, 1, np.sqrt(threshold / freq))
             
         self._rejectProb = rejectProb
         return self._rejectProb
