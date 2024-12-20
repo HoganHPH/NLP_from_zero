@@ -1,1 +1,1 @@
-<h1>RNN From Zero</h1>
+<h1>NLP From Zero</h1>
