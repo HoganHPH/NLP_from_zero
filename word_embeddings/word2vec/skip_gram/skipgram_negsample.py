@@ -10,6 +10,7 @@ from torch import nn
 import torch.optim as optim
 
 from collections import Counter
+from tqdm import tqdm 
 
 import utils
 
@@ -217,7 +218,7 @@ epochs = 5
 for e in range(epochs):
     
     # get our input, target batches
-    for input_words, target_words in get_batches(train_words, 512):
+    for input_words, target_words in tqdm(get_batches(train_words, 512)):
         steps += 1
         inputs, targets = torch.LongTensor(input_words), torch.LongTensor(target_words)
         inputs, targets = inputs.to(device), targets.to(device)
