@@ -1,0 +1,7 @@
+unidecode
+torch
+nltk
+matplotlib
+pandas
+numpy
+scikit-learn
